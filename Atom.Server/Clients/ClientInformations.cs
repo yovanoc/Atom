@@ -1,9 +1,16 @@
-﻿namespace Atom.Server.Clients
+﻿using System;
+
+namespace Atom.Server.Clients
 {
-    public class ClientInformations
+    public class ClientInformations : IDisposable
     {
         // Fields
-        private Client _client;
+        private readonly Client _client;
+
+
+        // Properties
+        public int Id { get; set; }
+        public string Name { get; set; }
 
 
         // Constructor
@@ -12,12 +19,6 @@
             _client = client;
             SetDefault();
         }
-
-
-        // Properties
-        public int Id { get; set; }
-
-        public string Name { get; set; }
 
         public void SetDefault()
         {
@@ -28,6 +29,11 @@
         public override string ToString()
         {
             return $"({Id}:{Name})";
+        }
+
+        public void Dispose()
+        {
+            Name = null;
         }
     }
 }

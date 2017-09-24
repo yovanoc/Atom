@@ -5,7 +5,7 @@ using Atom.Server.Handlers;
 
 namespace Atom.Server.Clients
 {
-    public class Client
+    public class Client : IDisposable
     {
         // Fields
         private readonly ClientHandler _handler;
@@ -27,7 +27,7 @@ namespace Atom.Server.Clients
         public ClientWrapper Network => _handler.Client;
 
         public bool Running => Network.Running;
-        public ClientInformations Informations { get; }
+        public ClientInformations Informations { get; private set; }
         public bool LoggedIn { get; set; }
 
         public void SendMessage(INetworkMessage message)
@@ -66,10 +66,16 @@ namespace Atom.Server.Clients
 
         private void Network_Disconnected(ClientWrapper client)
         {
-            // TODO: Clear everything
             LoggedIn = false;
         }
 
-        #endregion
-    }
+        public void Dispose()
+        {
+            Informations.Dispose();
+            Informations = null;
+            LoggedIn = false;
+        }
+
+    #endregion
+}
 }

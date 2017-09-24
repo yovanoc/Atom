@@ -15,10 +15,10 @@ namespace Atom.Server.Handlers
             {
                 await Semaphore.WaitAsync();
 
-                client.LoggedIn = true;
-                client.SendMessage(new LoginAcceptedMessage("Chris"));
+                client.LoggedIn = true;             
                 client.Informations.Id = 21;
                 client.Informations.Name = "Chris";
+                client.SendMessage(new LoginAcceptedMessage("Chris"));
 
                 Semaphore.Release();
             });

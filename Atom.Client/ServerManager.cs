@@ -41,7 +41,7 @@ namespace Atom.Client
             if (Network.Running)
                 return;
 
-            Network.Connect("127.0.0.1", 1457);
+            Network.Connect("127.0.0.1", 1458);
         }
 
         #region Client Events

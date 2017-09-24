@@ -16,7 +16,7 @@ namespace Atom.Server
         {
             Clients = new List<Client>();
 
-            var server = new ServerWrapper(IPAddress.Any, 1457);
+            var server = new ServerWrapper(IPAddress.Any, 1458);
             server.ClientConnected += Server_ClientConnected;
             server.ErrorOccured += Server_ErrorOccured;
             server.ClientDisconnected += Server_ClientDisconnected;
@@ -45,6 +45,9 @@ namespace Atom.Server
 
             Clients.Remove(client);
             Console.WriteLine("Client {0} disconnected, {1} left.", client.Informations.ToString(), Clients.Count);
+
+            // Dispose the client
+            client.Dispose();
         }
 
         public static void BroadcastMessage(INetworkMessage message, bool onlyLoggedIn)
