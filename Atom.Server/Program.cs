@@ -26,7 +26,7 @@ namespace Atom.Server
             Console.ReadKey();
         }
 
-        private static void Server_ClientConnected(ClientHandler handler)
+        private static void Server_ClientConnected(ClientWrapper handler)
         {
             Clients.Add(new Client(handler));
             Console.WriteLine("Client connected.");
@@ -37,9 +37,9 @@ namespace Atom.Server
             Console.WriteLine(exception.ToString());
         }
 
-        private static void Server_ClientDisconnected(ClientHandler handler)
+        private static void Server_ClientDisconnected(ClientWrapper handler)
         {
-            var client = Clients.FirstOrDefault(c => c.Network == handler.Client);
+            var client = Clients.FirstOrDefault(c => c.Network == handler);
 
             if (client == null) return;
 

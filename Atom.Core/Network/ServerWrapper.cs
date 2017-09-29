@@ -16,20 +16,20 @@ namespace Atom.Core.Network
         public ServerWrapper(IPAddress ipAddress, int port)
         {
             _tcpListener = new TcpListener(ipAddress, port);
-            Clients = new List<ClientHandler>();
+            Clients = new List<ClientWrapper>();
         }
 
 
         // Properties
         public bool Listening { get; private set; }
 
-        public List<ClientHandler> Clients { get; }
+        public List<ClientWrapper> Clients { get; }
 
 
         // Events
-        public event Action<ClientHandler> ClientConnected;
+        public event Action<ClientWrapper> ClientConnected;
 
-        public event Action<ClientHandler> ClientDisconnected;
+        public event Action<ClientWrapper> ClientDisconnected;
         public event Action<Exception> ErrorOccured;
 
 
@@ -77,13 +77,13 @@ namespace Atom.Core.Network
             try
             {
                 var newClient = (ar.AsyncState as TcpListener).EndAcceptSocket(ar);
-                var clientHandler = new ClientHandler(newClient);
+                var ClientWrapper = new ClientWrapper(newClient);
 
-                clientHandler.Client.Disconnected += Client_Disconnected;
+                ClientWrapper.Disconnected += Client_Disconnected;
 
-                Clients.Add(clientHandler);
-                clientHandler.Client.Start();
-                ClientConnected?.Invoke(clientHandler);
+                Clients.Add(ClientWrapper);
+                ClientWrapper.Start();
+                ClientConnected?.Invoke(ClientWrapper);
 
                 // Re-call BeginAcceptSocket
                 _tcpListener.BeginAcceptSocket(TcpListener_AcceptCallback, _tcpListener);
@@ -98,14 +98,14 @@ namespace Atom.Core.Network
         {
             try
             {
-                var clientHandler = Clients.FirstOrDefault(c => c.Client == client);
+                var ClientWrapper = Clients.FirstOrDefault(c => c == client);
 
-                if (clientHandler != null)
+                if (ClientWrapper != null)
                 {
-                    Clients.Remove(clientHandler);
-                    ClientDisconnected?.Invoke(clientHandler);
+                    Clients.Remove(ClientWrapper);
+                    ClientDisconnected?.Invoke(ClientWrapper);
 
-                    clientHandler.Dispose();
+                    ClientWrapper.Dispose();
                 }
             }
             catch (Exception ex)

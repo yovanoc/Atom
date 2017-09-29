@@ -18,6 +18,7 @@ namespace Atom.Server.Handlers
 
                 Console.WriteLine("RECEIVED A PONG FROM {0} WITH A DELAY OF {1} MS", client.Informations.ToString(),
                     message.Delay);
+                client.StopPingTimeoutTimer();
 
                 Semaphore.Release();
             });

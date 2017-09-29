@@ -15,7 +15,7 @@ namespace Atom.Server.Handlers
             {
                 await Semaphore.WaitAsync();
 
-                client.LoggedIn = true;             
+                client.LoggedIn = true;
                 client.Informations.Id = 21;
                 client.Informations.Name = "Chris";
                 client.SendMessage(new LoginAcceptedMessage("Chris"));
