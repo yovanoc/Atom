@@ -51,7 +51,6 @@ namespace Atom.Core.Network
 
         // Events
         public event Action<ClientWrapper> Connected;
-
         public event Action<ClientWrapper, byte[]> DataReceived;
         public event Action<ClientWrapper, Exception> ErrorOccured;
         public event Action<ClientWrapper> Disconnected;
